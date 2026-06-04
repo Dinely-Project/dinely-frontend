@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  const { user, loading, login } = useContext(AuthContext)!;
+  const { loading, login } = useContext(AuthContext)!;
   const navigate = useNavigate();
 
   const handleSubmit = async (e?: React.FormEvent) => {

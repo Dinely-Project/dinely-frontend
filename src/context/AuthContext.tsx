@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, type ReactNode } from 'react';
-import api from '../api/axios';
+import api, { AUTH_TOKEN_KEY } from '../api/axios';
 
 export interface User {
   id: string;
@@ -25,38 +25,54 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('dinely_token');
+    let isMounted = true;
 
-    if (!storedToken) {
+const restoreSession = async () => {
+  console.log('1. restoreSession started');
+  const storedToken = localStorage.getItem(AUTH_TOKEN_KEY);
+  console.log('2. storedToken:', storedToken ? 'EXISTS' : 'NULL');
+
+  if (!storedToken) {
+    setLoading(false);
+    return;
+  }
+
+  try {
+    setToken(storedToken);
+    console.log('3. calling /api/auth/me');
+    const response = await api.get('/api/auth/me');
+    console.log('4. response data:', response.data);
+    if (!isMounted) return;
+    setUser(response.data.user ?? response.data);
+    console.log('5. user set');
+  } catch (error) {
+    console.error('6. error:', error);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    setToken(null);
+    setUser(null);
+  } finally {
+    if (isMounted) {
       setLoading(false);
-      return;
+      console.log('7. loading set to false');
     }
+  }
+};
 
-    api
-      .get('/api/auth/me')
-      .then((response) => {
-        setUser(response.data.user || response.data);
-        setToken(storedToken);
-      })
-      .catch((error) => {
-        console.error('Failed to fetch user', error);
-        localStorage.removeItem('dinely_token');
-        setToken(null);
-        setUser(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    restoreSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = (token: string, user: User) => {
-    localStorage.setItem('dinely_token', token);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
     setToken(token);
     setUser(user);
   };
 
   const logout = () => {
-    localStorage.removeItem('dinely_token');
+    localStorage.removeItem(AUTH_TOKEN_KEY);
     setToken(null);
     setUser(null);
   };
@@ -66,4 +82,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       {children}
     </AuthContext.Provider>
   );
+
 };
+
