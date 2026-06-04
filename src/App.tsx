@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { useContext } from 'react';
+import { AuthContext, AuthProvider } from './context/AuthContext';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -9,6 +10,16 @@ import AdminDashboard from './dashboards/AdminDashboard';
 import StaffDashboard from './dashboards/StaffDashboard';
 import EmployeeDashboard from './dashboards/EmployeeDashboard';
 import CustomerDashboard from './dashboards/CustomerDashboard';
+
+const FallbackRedirect = () => {
+  const authContext = useContext(AuthContext);
+
+  if (!authContext || authContext.loading) {
+    return null;
+  }
+
+  return <Navigate to="/" replace />;
+};
 
 function App() {
   return (
@@ -36,7 +47,7 @@ function App() {
             <Route path="/dinely/customer/dashboard" element={<CustomerDashboard />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<FallbackRedirect />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
