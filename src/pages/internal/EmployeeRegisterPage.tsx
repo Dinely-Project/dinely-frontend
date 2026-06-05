@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import { getApiErrorMessage } from '../../api/errors';
 
 const EmployeeRegisterPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -39,8 +40,8 @@ const EmployeeRegisterPage: React.FC = () => {
     try {
       await api.post('/api/internal/register/employee', payload);
       navigate('/');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } catch (err: unknown) {
+      setError(getApiErrorMessage(err, 'Registration failed. Please try again.'));
     }
   };
 

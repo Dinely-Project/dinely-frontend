@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UsersPanel from '../components/admin/UsersPanel';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/auth-context';
 
 const ROLE_COLORS: Record<string, string> = {
   ADMIN: '#a259f7',

@@ -76,7 +76,11 @@ export const useAdminUsers = (filters: AdminUserFilters = {}) => {
   }, [filters.role, filters.status]);
 
   useEffect(() => {
-    fetchUsers();
+    const timeoutId = window.setTimeout(() => {
+      fetchUsers();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [fetchUsers]);
 
   return {
