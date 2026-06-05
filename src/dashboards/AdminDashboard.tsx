@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SalaryConfigPanel from '../components/admin/SalaryConfigPanel';
 import UsersPanel from '../components/admin/UsersPanel';
 import { AuthContext } from '../context/auth-context';
 
@@ -35,6 +36,10 @@ const AdminDashboard: React.FC = () => {
   const renderMainContent = () => {
     if (activePanel === 'users') {
       return <UsersPanel />;
+    }
+
+    if (activePanel === 'salary') {
+      return <SalaryConfigPanel />;
     }
 
     if (activePanel !== 'overview') {
