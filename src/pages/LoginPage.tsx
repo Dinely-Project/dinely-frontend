@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/auth-context';
 import api from '../api/axios';
+import { getApiErrorMessage } from '../api/errors';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -46,8 +47,8 @@ const LoginPage: React.FC = () => {
 
       console.warn('Unknown role:', user.role);
       navigate('/');
-    } catch (err: any) {
-      setError(err.response?.data?.message ?? 'Login failed. Please try again.');
+    } catch (err: unknown) {
+      setError(getApiErrorMessage(err, 'Login failed. Please try again.'));
     } finally {
       setIsLoading(false);
     }

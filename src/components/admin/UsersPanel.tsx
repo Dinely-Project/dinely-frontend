@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import api from '../../api/axios';
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from '../../context/auth-context';
 import { useAdminUsers } from '../../hooks/useAdminUsers';
 import type { AdminUser } from '../../hooks/useAdminUsers';
 import EditRoleModal from './EditRoleModal';

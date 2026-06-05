@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import api from '../../api/axios';
+import { getApiErrorMessage } from '../../api/errors';
 import type { AdminUser } from '../../hooks/useAdminUsers';
 
 interface EditRoleModalProps {
@@ -52,9 +53,9 @@ const EditRoleModal = ({ user, onClose, onSuccess }: EditRoleModalProps) => {
 
       onSuccess();
       onClose();
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Failed to update employee role', err);
-      setError('Failed to update role. Please try again.');
+      setError(getApiErrorMessage(err, 'Failed to update role. Please try again.'));
     } finally {
       setSaving(false);
     }
