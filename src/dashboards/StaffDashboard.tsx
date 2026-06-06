@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/auth-context';
 import { useNavigate } from 'react-router-dom';
+import MenuManagementPanel from '../components/staff/menu/MenuManagementPanel';
 
 const ROLE_COLORS: Record<string, string> = {
   ADMIN: '#a259f7',
@@ -24,8 +25,10 @@ const StaffDashboard: React.FC = () => {
     { icon: '📋', label: 'Orders' },
     { icon: '📦', label: 'Menu Management' },
     { icon: '👤', label: 'Profile' },
-    { icon: '⚙️', label: 'Settings' }
+    { icon: '⚙️', label: 'Settings' },
   ];
+
+  const [activeSection, setActiveSection] = useState(navItems[0].label);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: '#0a0a0a', color: '#fff' }}>
@@ -57,50 +60,77 @@ const StaffDashboard: React.FC = () => {
           width: '260px', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid rgba(255,255,255,0.08)',
           padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '8px'
         }}>
-          {navItems.map((item, idx) => (
-            <div key={idx} style={{ 
-              padding: '12px 16px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px',
-              background: idx === 0 ? 'rgba(255, 107, 53, 0.1)' : 'transparent',
-              color: idx === 0 ? '#FF6B35' : '#A0A0A0', cursor: 'pointer',
-              fontWeight: idx === 0 ? 600 : 500, transition: 'all 0.2s'
-            }}>
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => setActiveSection(item.label)}
+              style={{
+                padding: '12px 16px',
+                borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                background: activeSection === item.label ? 'rgba(255, 107, 53, 0.1)' : 'transparent',
+                color: activeSection === item.label ? '#FF6B35' : '#A0A0A0',
+                cursor: 'pointer',
+                fontWeight: activeSection === item.label ? 600 : 500,
+                transition: 'all 0.2s',
+                border: 'none',
+                textAlign: 'left',
+              }}
+            >
               <span>{item.icon}</span>
               <span>{item.label}</span>
-            </div>
+            </button>
           ))}
         </aside>
 
         <main style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
-          <div style={{ marginBottom: '40px' }}>
-            <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px' }}>Staff Dashboard</h1>
-            <p className="text-muted" style={{ fontSize: '16px' }}>Welcome back, {user?.name || 'Staff'} 👋</p>
-          </div>
+          {activeSection === 'Menu Management' ? (
+            <div>
+              <div style={{ marginBottom: '24px' }}>
+                <h1 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '8px' }}>Menu Management</h1>
+                <p className="text-muted" style={{ fontSize: '16px' }}>
+                  Update categories, items, and availability for the customer menu.
+                </p>
+              </div>
+              <MenuManagementPanel />
+            </div>
+          ) : (
+            <div>
+              <div style={{ marginBottom: '40px' }}>
+                <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px' }}>Staff Dashboard</h1>
+                <p className="text-muted" style={{ fontSize: '16px' }}>Welcome back, {user?.name || 'Staff'} 👋</p>
+              </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginBottom: '40px' }}>
-            {[
-              { icon: '📈', label: 'Total Orders' },
-              { icon: '💵', label: 'Revenue' },
-              { icon: '📦', label: 'Menu Items' },
-              { icon: '🔥', label: 'Hot Items' }
-            ].map((stat, idx) => (
-              <div key={idx} className="glass-card" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-                <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px' }}>
-                  {stat.icon}
-                </div>
-                <div>
-                  <div className="text-muted" style={{ fontSize: '14px', marginBottom: '4px' }}>{stat.label}</div>
-                  <div style={{ fontSize: '28px', fontWeight: 700 }}>—</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginBottom: '40px' }}>
+                {[
+                  { icon: '📈', label: 'Total Orders' },
+                  { icon: '💵', label: 'Revenue' },
+                  { icon: '📦', label: 'Menu Items' },
+                  { icon: '🔥', label: 'Hot Items' },
+                ].map((stat) => (
+                  <div key={stat.label} className="glass-card" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px' }}>
+                      {stat.icon}
+                    </div>
+                    <div>
+                      <div className="text-muted" style={{ fontSize: '14px', marginBottom: '4px' }}>{stat.label}</div>
+                      <div style={{ fontSize: '28px', fontWeight: 700 }}>—</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="glass-card" style={{ padding: '40px', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '24px' }}>📊 Recent Activity</h2>
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#A0A0A0' }}>
+                  No activity yet. Check back later.
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="glass-card" style={{ padding: '40px', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '24px' }}>📊 Recent Activity</h2>
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#A0A0A0' }}>
-              No activity yet. Check back later.
             </div>
-          </div>
+          )}
         </main>
       </div>
     </div>
