@@ -6,6 +6,9 @@ export interface User {
   email: string;
   role: string;
   status: string;
+  employee_role?: string | null;
+  employee_level?: number | null;
+  salary?: number | null;
 }
 
 export interface AuthContextType {
