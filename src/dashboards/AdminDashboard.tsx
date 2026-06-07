@@ -1,17 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HRRequestsPanel from '../components/admin/HRRequestsPanel';
 import SalaryConfigPanel from '../components/admin/SalaryConfigPanel';
 import UsersPanel from '../components/admin/UsersPanel';
+import { ROLE_COLORS } from '../constants/colors';
 import { AuthContext } from '../context/auth-context';
 
-const ROLE_COLORS: Record<string, string> = {
-  ADMIN: '#a259f7',
-  STAFF: '#4d8ef0',
-  EMPLOYEE: '#00c9a7',
-  CUSTOMER: '#FF6B35',
-};
-
-type ActivePanel = 'overview' | 'users' | 'orders' | 'salary' | 'profile' | 'settings';
+type ActivePanel = 'overview' | 'users' | 'orders' | 'salary' | 'hr-requests' | 'profile' | 'settings';
 
 const AdminDashboard: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -28,6 +23,7 @@ const AdminDashboard: React.FC = () => {
     { key: 'overview', icon: 'OV', label: 'Overview' },
     { key: 'users', icon: 'US', label: 'Users' },
     { key: 'orders', icon: 'OR', label: 'Orders' },
+    { key: 'hr-requests', icon: 'HR', label: 'HR Requests' },
     { key: 'salary', icon: 'SA', label: 'Salary Config' },
     { key: 'profile', icon: 'PR', label: 'Profile' },
     { key: 'settings', icon: 'SE', label: 'Settings' },
@@ -40,6 +36,10 @@ const AdminDashboard: React.FC = () => {
 
     if (activePanel === 'salary') {
       return <SalaryConfigPanel />;
+    }
+
+    if (activePanel === 'hr-requests') {
+      return <HRRequestsPanel />;
     }
 
     if (activePanel !== 'overview') {
