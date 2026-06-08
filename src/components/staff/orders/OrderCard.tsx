@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { OrderSummary, OrderStatus } from '../../../hooks/useOrders';
 import { STATUS_COLORS, STATUS_BG } from '../../../constants/colors';
 import OrderStatusBadge from './OrderStatusBadge';
 import OrderActionButtons from './OrderActionButtons';
 import ElapsedTime from './ElapsedTime';
+import { downloadInvoice } from '../../../services/invoice.api';
+import { getApiErrorMessage } from '../../../api/errors';
 
 interface OrderCardProps {
   order: OrderSummary;
@@ -19,6 +21,36 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onUpdate, onNavigate, onEr
   const borderColor = STATUS_COLORS[order.status] ?? '#6e7681';
   const bgColor = STATUS_BG[order.status] ?? 'rgba(110,118,129,0.06)';
   const shortId = order.id.slice(0, 8).toUpperCase();
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsDownloading(true);
+    try {
+      const { blob, invoiceNumber } = await downloadInvoice(order.id);
+      const url = window.URL.createObjectURL(blob);
+      
+      // 1. Open in new tab
+      window.open(url, '_blank');
+
+      // 2. Trigger automatic download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `DINELY-INVOICE-${invoiceNumber}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // Clean up object URL after a short delay so the new tab has time to render
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
+    } catch (err: unknown) {
+      onError(getApiErrorMessage(err, 'Failed to download invoice.'));
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <div
@@ -68,6 +100,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onUpdate, onNavigate, onEr
               {order.customer_name}
             </span>
             <OrderStatusBadge status={order.status} size="sm" />
+            {order.status === 'FINISHED' && (
+              <span style={{ fontSize: '11px', background: 'rgba(0,201,167,0.1)', color: '#00C9A7', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
+                Invoice Available
+              </span>
+            )}
           </div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
             <span className="text-muted" style={{ fontSize: '13px' }}>
@@ -108,25 +145,39 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onUpdate, onNavigate, onEr
           compact
         />
 
-        <button
-          type="button"
-          onClick={() => onNavigate(order.id)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#A0A0A0',
-            fontSize: '12px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            padding: '4px 0',
-            transition: 'color 0.15s',
-            fontFamily: "'Inter', sans-serif",
-            textDecoration: 'underline',
-            textUnderlineOffset: '3px',
-          }}
-        >
-          View Details →
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {order.status === 'FINISHED' && (
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={isDownloading}
+              className="btn-ghost"
+              style={{ fontSize: '12px', padding: '4px 12px' }}
+            >
+              {isDownloading ? 'Generating...' : '📄 Download Invoice'}
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => onNavigate(order.id)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#A0A0A0',
+              fontSize: '12px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              padding: '4px 0',
+              transition: 'color 0.15s',
+              fontFamily: "'Inter', sans-serif",
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+            }}
+          >
+            View Details →
+          </button>
+        </div>
       </div>
     </div>
   );

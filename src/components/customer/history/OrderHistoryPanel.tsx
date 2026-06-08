@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useOrderHistory } from '../../../hooks/useCustomerOrders';
 import { STATUS_COLORS, STATUS_BG } from '../../../constants/colors';
 import type { CustomerOrderStatus } from '../../../hooks/useCustomerOrders';
+import { downloadInvoice } from '../../../services/invoice.api';
+import { getApiErrorMessage } from '../../../api/errors';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -53,9 +55,41 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => (
 const OrderHistoryPanel: React.FC = () => {
   const { history, loading, error, refetch } = useOrderHistory();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [downloadingInvoiceOrderId, setDownloadingInvoiceOrderId] = useState<string | null>(null);
+  const [invoiceError, setInvoiceError] = useState<string | null>(null);
 
   const toggleExpand = (id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
+  };
+
+  const handleDownloadInvoice = async (e: React.MouseEvent, orderId: string) => {
+    e.stopPropagation();
+    setDownloadingInvoiceOrderId(orderId);
+    setInvoiceError(null);
+    try {
+      const { blob, invoiceNumber } = await downloadInvoice(orderId);
+      const url = window.URL.createObjectURL(blob);
+      
+      // 1. Open in new tab
+      window.open(url, '_blank');
+
+      // 2. Trigger automatic download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `DINELY-INVOICE-${invoiceNumber}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // Clean up object URL after a short delay so the new tab has time to render
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 1000);
+    } catch (err: unknown) {
+      setInvoiceError(getApiErrorMessage(err, 'Failed to download invoice.'));
+    } finally {
+      setDownloadingInvoiceOrderId(null);
+    }
   };
 
   return (
@@ -118,6 +152,23 @@ const OrderHistoryPanel: React.FC = () => {
         </div>
       )}
 
+      {/* Invoice Error */}
+      {invoiceError && (
+        <div
+          style={{
+            padding: '14px 18px',
+            background: 'rgba(248,81,73,0.1)',
+            border: '1px solid rgba(248,81,73,0.2)',
+            borderRadius: '10px',
+            color: '#f85149',
+            fontSize: '14px',
+            marginBottom: '16px',
+          }}
+        >
+          {invoiceError}
+        </div>
+      )}
+
       {/* Empty state */}
       {!loading && history.length === 0 && (
         <div
@@ -175,9 +226,16 @@ const OrderHistoryPanel: React.FC = () => {
                 >
                   {/* Order info */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: '15px', fontWeight: 700, marginBottom: '4px' }}>
-                      Order #{shortId}
-                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <p style={{ fontSize: '15px', fontWeight: 700 }}>
+                        Order #{shortId}
+                      </p>
+                      {order.status === 'FINISHED' && (
+                        <span style={{ fontSize: '11px', background: 'rgba(0,201,167,0.1)', color: '#00C9A7', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
+                          Invoice Available
+                        </span>
+                      )}
+                    </div>
                     <p className="text-muted" style={{ fontSize: '13px' }}>
                       {formatDate(order.created_at)} · {order.item_count}{' '}
                       {order.item_count === 1 ? 'item' : 'items'}
@@ -260,6 +318,20 @@ const OrderHistoryPanel: React.FC = () => {
                       >
                         "{order.notes}"
                       </p>
+                    )}
+
+                    {order.status === 'FINISHED' && (
+                      <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                        <button
+                          type="button"
+                          onClick={(e) => handleDownloadInvoice(e, order.id)}
+                          disabled={downloadingInvoiceOrderId === order.id}
+                          className="btn-ghost"
+                          style={{ fontSize: '13px', padding: '8px 16px' }}
+                        >
+                          {downloadingInvoiceOrderId === order.id ? 'Generating PDF...' : '📄 Download Invoice'}
+                        </button>
+                      </div>
                     )}
                   </div>
                 )}
