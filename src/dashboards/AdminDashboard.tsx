@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
+import AnalyticsPanel from '../components/admin/AnalyticsPanel';
+import AdminOrdersPanel from '../components/admin/AdminOrdersPanel';
 import { useNavigate } from 'react-router-dom';
 import HRRequestsPanel from '../components/admin/HRRequestsPanel';
+import ProfilePanel from '../components/admin/ProfilePanel';
 import SalaryConfigPanel from '../components/admin/SalaryConfigPanel';
 import UsersPanel from '../components/admin/UsersPanel';
 import { ROLE_COLORS } from '../constants/colors';
@@ -30,8 +33,16 @@ const AdminDashboard: React.FC = () => {
   ];
 
   const renderMainContent = () => {
+    if (activePanel === 'overview') {
+      return <AnalyticsPanel />;
+    }
+
     if (activePanel === 'users') {
       return <UsersPanel />;
+    }
+
+    if (activePanel === 'orders') {
+      return <AdminOrdersPanel />;
     }
 
     if (activePanel === 'salary') {
@@ -42,67 +53,23 @@ const AdminDashboard: React.FC = () => {
       return <HRRequestsPanel />;
     }
 
-    if (activePanel !== 'overview') {
-      return (
-        <div
-          className="glass-card"
-          style={{
-            padding: '40px',
-            minHeight: '300px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div className="text-muted" style={{ fontSize: '18px' }}>Coming soon</div>
-        </div>
-      );
+    if (activePanel === 'profile') {
+      return <ProfilePanel />;
     }
 
     return (
-      <>
-        <div style={{ marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px' }}>Admin Dashboard</h1>
-          <p className="text-muted" style={{ fontSize: '16px' }}>Welcome back, {user?.name || 'Admin'}</p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginBottom: '40px' }}>
-          {[
-            { icon: 'ORD', label: 'Total Orders' },
-            { icon: 'REV', label: 'Revenue' },
-            { icon: 'STA', label: 'Active Staff' },
-            { icon: 'MEN', label: 'Menu Items' },
-          ].map((stat) => (
-            <div key={stat.label} className="glass-card" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '16px',
-                background: 'rgba(255,255,255,0.05)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: '#FF6B35',
-                fontSize: '13px',
-                fontWeight: 700,
-              }}>
-                {stat.icon}
-              </div>
-              <div>
-                <div className="text-muted" style={{ fontSize: '14px', marginBottom: '4px' }}>{stat.label}</div>
-                <div style={{ fontSize: '28px', fontWeight: 700 }}>-</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="glass-card" style={{ padding: '40px', minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '24px' }}>Recent Activity</h2>
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#A0A0A0' }}>
-            No activity yet. Check back later.
-          </div>
-        </div>
-      </>
+      <div
+        className="glass-card"
+        style={{
+          padding: '40px',
+          minHeight: '300px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div className="text-muted" style={{ fontSize: '18px' }}>Coming soon</div>
+      </div>
     );
   };
 
