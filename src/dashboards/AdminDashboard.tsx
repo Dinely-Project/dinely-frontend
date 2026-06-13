@@ -9,7 +9,7 @@ import UsersPanel from '../components/admin/UsersPanel';
 import { ROLE_COLORS } from '../constants/colors';
 import { AuthContext } from '../context/auth-context';
 
-type ActivePanel = 'overview' | 'users' | 'orders' | 'salary' | 'hr-requests' | 'profile' | 'settings';
+type ActivePanel = 'overview' | 'users' | 'orders' | 'salary' | 'hr-requests' | 'profile';
 
 const AdminDashboard: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -29,7 +29,6 @@ const AdminDashboard: React.FC = () => {
     { key: 'hr-requests', icon: 'HR', label: 'HR Requests' },
     { key: 'salary', icon: 'SA', label: 'Salary Config' },
     { key: 'profile', icon: 'PR', label: 'Profile' },
-    { key: 'settings', icon: 'SE', label: 'Settings' },
   ];
 
   const renderMainContent = () => {

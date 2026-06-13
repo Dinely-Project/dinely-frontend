@@ -7,14 +7,13 @@ import LiveOrdersPanel from '../components/staff/orders/LiveOrdersPanel';
 import OrderDetailView from '../components/staff/orders/OrderDetailView';
 import NotificationBell from '../components/notifications/NotificationBell';
 
-type ActiveSection = 'Overview' | 'Orders' | 'Menu Management' | 'Profile' | 'Settings';
+type ActiveSection = 'Overview' | 'Orders' | 'Menu Management' | 'Profile';
 
 const navItems: { icon: string; label: ActiveSection }[] = [
   { icon: '🏠', label: 'Overview' },
   { icon: '📋', label: 'Orders' },
   { icon: '📦', label: 'Menu Management' },
   { icon: '👤', label: 'Profile' },
-  { icon: '⚙️', label: 'Settings' },
 ];
 
 const StaffDashboard: React.FC = () => {

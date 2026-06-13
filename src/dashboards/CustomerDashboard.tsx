@@ -7,14 +7,13 @@ import NotificationBell from '../components/notifications/NotificationBell';
 import ActiveOrdersPanel from '../components/customer/orders/ActiveOrdersPanel';
 import OrderHistoryPanel from '../components/customer/history/OrderHistoryPanel';
 
-type ActiveSection = 'Overview' | 'My Orders' | 'Order History' | 'Profile' | 'Settings';
+type ActiveSection = 'Overview' | 'My Orders' | 'Order History' | 'Profile';
 
 const navItems: { icon: string; label: ActiveSection }[] = [
   { icon: '🏠', label: 'Overview' },
   { icon: '📋', label: 'My Orders' },
   { icon: '🕐', label: 'Order History' },
   { icon: '👤', label: 'Profile' },
-  { icon: '⚙️', label: 'Settings' },
 ];
 
 const CustomerDashboard: React.FC = () => {
@@ -38,7 +37,7 @@ const CustomerDashboard: React.FC = () => {
       return <OrderHistoryPanel />;
     }
 
-    // Overview (and stubs for Profile / Settings)
+    // Overview (and stubs for Profile)
     return (
       <div>
         <div style={{ marginBottom: '40px' }}>
