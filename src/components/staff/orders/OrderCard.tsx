@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FileText } from 'lucide-react';
 import type { OrderSummary, OrderStatus } from '../../../hooks/useOrders';
 import { STATUS_COLORS, STATUS_BG } from '../../../constants/colors';
 import OrderStatusBadge from './OrderStatusBadge';
@@ -154,7 +155,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onUpdate, onNavigate, onEr
               className="btn-ghost"
               style={{ fontSize: '12px', padding: '4px 12px' }}
             >
-              {isDownloading ? 'Generating...' : '📄 Download Invoice'}
+              {isDownloading ? (
+                'Generating...'
+              ) : (
+                <>
+                  <FileText size={14} style={{ marginRight: 6 }} /> Download Invoice
+                </>
+              )}
             </button>
           )}
 

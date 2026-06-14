@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { UtensilsCrossed } from 'lucide-react';
 import type { CustomerOrder } from '../../../hooks/useCustomerOrders';
 
 interface OrderReadyBannerProps {
@@ -75,7 +76,7 @@ const OrderReadyBanner: React.FC<OrderReadyBannerProps> = ({ readyOrders }) => {
                 flexShrink: 0,
               }}
             >
-              🍽️
+              <UtensilsCrossed size={20} />
             </div>
 
             {/* Text */}

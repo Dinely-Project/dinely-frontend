@@ -1,5 +1,13 @@
 import React from 'react';
+import { Bird, BookOpen, Camera, Music, ShoppingCart, Star, Truck, UtensilsCrossed } from 'lucide-react';
 import Navbar from '../components/Navbar';
+
+const SOCIAL_ICONS: React.ReactNode[] = [
+  <Bird size={18} />,
+  <Camera size={18} />,
+  <BookOpen size={18} />,
+  <Music size={18} />,
+];
 
 const LandingPage: React.FC = () => {
   return (
@@ -17,7 +25,7 @@ const LandingPage: React.FC = () => {
           <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', alignItems: 'center', gap: '40px' }}>
             <div style={{ flex: '1 1 50%', minWidth: '300px' }}>
               <div style={{ display: 'inline-block', border: '1px solid #FF6B35', color: '#FF6B35', borderRadius: '50px', padding: '6px 16px', fontSize: '13px', fontWeight: 600, marginBottom: '24px' }}>
-                🍴 World Class Dining Experience
+                <UtensilsCrossed size={20} style={{ marginRight: 8 }} /> World Class Dining Experience
               </div>
               <h1 style={{ fontSize: '72px', fontWeight: 800, lineHeight: 1.1, marginBottom: '24px' }}>
                 <span style={{ color: '#fff' }}>Experience the</span><br />
@@ -62,10 +70,10 @@ const LandingPage: React.FC = () => {
                 }} />
                 
                 <div className="glass-card" style={{ position: 'absolute', top: '40px', right: '-20px', padding: '12px 20px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, fontSize: '14px' }}>
-                  ⭐ 4.9 Rating
+                  <Star size={16} style={{ marginRight: 6 }} fill="currentColor" /> 4.9 Rating
                 </div>
                 <div className="glass-card" style={{ position: 'absolute', bottom: '60px', left: '-40px', padding: '12px 20px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600, fontSize: '14px' }}>
-                  🚚 Fast Delivery
+                  <Truck size={16} style={{ marginRight: 6 }} /> Fast Delivery
                 </div>
               </div>
             </div>
@@ -91,7 +99,7 @@ const LandingPage: React.FC = () => {
                   <p className="text-muted" style={{ fontSize: '14px', marginBottom: '12px' }}>{dish.desc}</p>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '20px', fontWeight: 700 }}>{dish.price}</span>
-                    <button style={{ background: '#FF6B35', color: '#fff', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>🛒</button>
+                    <button style={{ background: '#FF6B35', color: '#fff', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><ShoppingCart size={18} /></button>
                   </div>
                 </div>
               </div>
@@ -152,8 +160,8 @@ const LandingPage: React.FC = () => {
             <h2 style={{ fontSize: '28px', fontWeight: 700, marginBottom: '16px' }}><span className="text-orange">Din</span>ely</h2>
             <p className="text-muted" style={{ marginBottom: '24px' }}>Crafted with care. Served with passion.</p>
             <div style={{ display: 'flex', gap: '16px' }}>
-              {['🐦', '📸', '📘', '🎵'].map(icon => (
-                <a href="#" key={icon} style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#FF6B35'} onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}>{icon}</a>
+              {SOCIAL_ICONS.map((icon, index) => (
+                <a href="#" key={index} style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#FF6B35'} onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}>{icon}</a>
               ))}
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { UtensilsCrossed } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import { getApiErrorMessage } from '../api/errors';
@@ -36,7 +37,7 @@ const RegisterPage: React.FC = () => {
       <div className="glass-card" style={{ width: '100%', maxWidth: '460px', padding: '48px 40px' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '24px' }}>
-            🍴 <span style={{ color: '#fff' }}>Din</span><span className="text-orange">ely</span>
+            <UtensilsCrossed size={22} style={{ marginRight: 8 }} /> <span style={{ color: '#fff' }}>Din</span><span className="text-orange">ely</span>
           </div>
           <h2 style={{ fontSize: '28px', marginBottom: '8px', fontWeight: 700 }}>Create Account</h2>
         </div>

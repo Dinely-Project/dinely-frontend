@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { Eye, EyeOff, UtensilsCrossed } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth-context';
 import api from '../api/axios';
@@ -10,7 +11,7 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { loading, login } = useContext(AuthContext)!;
   const navigate = useNavigate();
 
@@ -63,7 +64,7 @@ const LoginPage: React.FC = () => {
       <div className="glass-card" style={{ width: '100%', maxWidth: '440px', padding: '48px 40px' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <div style={{ fontSize: '32px', fontWeight: 'bold', marginBottom: '24px' }}>
-            🍴 <span style={{ color: '#fff' }}>Din</span><span className="text-orange">ely</span>
+            <UtensilsCrossed size={22} style={{ marginRight: 8 }} /> <span style={{ color: '#fff' }}>Din</span><span className="text-orange">ely</span>
           </div>
           <h2 style={{ fontSize: '28px', marginBottom: '8px', fontWeight: 700 }}>Welcome Back</h2>
           <p className="text-muted" style={{ fontSize: '15px' }}>Sign in to your account</p>
@@ -71,10 +72,10 @@ const LoginPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
-            <input 
-              type="email" 
-              placeholder="Email address" 
-              className="input-field" 
+            <input
+              type="email"
+              placeholder="Email address"
+              className="input-field"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -82,30 +83,30 @@ const LoginPage: React.FC = () => {
           </div>
           <div>
             <div style={{ position: 'relative' }}>
-              <input 
-                type={showPassword ? 'text' : 'password'} 
-                placeholder="Password" 
-                className="input-field" 
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                className="input-field"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 style={{
                   position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', color: '#A0A0A0', cursor: 'pointer', fontFamily: 'Inter', fontSize: '16px'
                 }}
               >
-                {showPassword ? '👁️‍🗨️' : '👁️'}
+                {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
               <a href="#" className="text-muted" style={{ fontSize: '13px' }}>Forgot Password?</a>
             </div>
           </div>
-          
+
           {error && (
             <div style={{ padding: '12px 16px', background: 'rgba(255, 76, 106, 0.1)', border: '1px solid rgba(255, 76, 106, 0.2)', borderRadius: '10px', color: '#FF4C6A', fontSize: '14px', textAlign: 'center' }}>
               {error}

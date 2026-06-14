@@ -11,9 +11,9 @@ import StaffOverviewPanel from '../components/staff/overview/StaffOverviewPanel'
 type ActiveSection = 'Overview' | 'Orders' | 'Menu Management';
 
 const navItems: { icon: string; label: ActiveSection }[] = [
-  { icon: '🏠', label: 'Overview' },
-  { icon: '📋', label: 'Orders' },
-  { icon: '📦', label: 'Menu Management' },
+  { icon: 'OV', label: 'Overview' },
+  { icon: 'OR', label: 'Orders' },
+  { icon: 'MN', label: 'Menu Management' },
 ];
 
 const StaffDashboard: React.FC = () => {
@@ -107,7 +107,7 @@ const StaffDashboard: React.FC = () => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* 🔔 Notification Bell */}
+          {/* Notification Bell */}
           <NotificationBell />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -172,7 +172,7 @@ const StaffDashboard: React.FC = () => {
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              <span>{item.icon}</span>
+              <span style={{ width: '24px', fontSize: '12px', fontWeight: 700 }}>{item.icon}</span>
               <span>{item.label}</span>
             </button>
           ))}

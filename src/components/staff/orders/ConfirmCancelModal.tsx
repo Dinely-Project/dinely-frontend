@@ -1,4 +1,5 @@
 import React from 'react';
+import { X } from 'lucide-react';
 
 interface ConfirmCancelModalProps {
   orderId: string;
@@ -59,7 +60,7 @@ const ConfirmCancelModal: React.FC<ConfirmCancelModalProps> = ({
             marginBottom: '20px',
           }}
         >
-          ✕
+          <X size={16} />
         </div>
 
         {/* Title */}

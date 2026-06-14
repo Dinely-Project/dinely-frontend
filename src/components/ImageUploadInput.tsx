@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Camera, X } from 'lucide-react';
 import ImagePreview from './ImagePreview';
 import { validateImageFile } from '../api/imageUpload';
 
@@ -103,7 +104,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
             disabled={disabled || isUploading}
             className="absolute -right-2 -top-2 rounded-full bg-[#FF4C6A] p-1.5 text-white hover:bg-[#FF2E4E] disabled:opacity-50"
           >
-            ✕
+            <X size={14} />
           </button>
         </div>
       )}
@@ -141,7 +142,7 @@ const ImageUploadInput: React.FC<ImageUploadInputProps> = ({
           </>
         ) : (
           <>
-            <div className="text-2xl">📷</div>
+            <Camera size={28} />
             <div className="text-center">
               <div className="text-sm font-semibold text-white">Click to upload</div>
               <div className="mt-1 text-xs text-muted">JPG, PNG or WebP • Max 5MB</div>

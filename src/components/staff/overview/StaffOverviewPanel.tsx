@@ -1,4 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  BarChart2,
+  ClipboardList,
+  Clock,
+  DollarSign,
+  Flame,
+  Medal,
+  Package,
+  PartyPopper,
+  Trophy,
+  UtensilsCrossed,
+} from 'lucide-react';
 import api from '../../../api/axios';
 import { getApiErrorMessage } from '../../../api/errors';
 import { STATUS_COLORS, STATUS_BG } from '../../../constants/colors';
@@ -46,6 +58,14 @@ const STATUS_LABELS: Record<string, string> = {
   CANCELLED: 'Cancelled',
 };
 
+const MEDALS: React.ReactNode[] = [
+  <Medal size={16} color="#FFD700" />,
+  <Medal size={16} color="#C0C0C0" />,
+  <Medal size={16} color="#CD7F32" />,
+  <span style={{ fontWeight: 700 }}>4</span>,
+  <span style={{ fontWeight: 700 }}>5</span>,
+];
+
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 const Spinner: React.FC = () => (
@@ -63,7 +83,7 @@ const Spinner: React.FC = () => (
 );
 
 interface StatCardProps {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   value: string | null;
   loading: boolean;
@@ -86,7 +106,6 @@ const StatCard: React.FC<StatCardProps> = ({ icon, label, value, loading, accent
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontSize: '24px',
         flexShrink: 0,
       }}
     >
@@ -264,7 +283,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
       <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h1 style={{ fontSize: '30px', fontWeight: 700, marginBottom: '6px' }}>
-            Welcome back, {userName || 'Staff'} 👋
+            Welcome back, {userName || 'Staff'}
           </h1>
           <p className="text-muted" style={{ fontSize: '15px' }}>
             Here's what's happening at the restaurant today.
@@ -328,7 +347,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
         }}
       >
         <StatCard
-          icon="📋"
+          icon={<ClipboardList size={22} />}
           label="Today's Orders"
           value={stats ? fmtNum(stats.totalOrders) : null}
           loading={loading && !stats}
@@ -336,7 +355,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
           subtext={stats ? `${stats.cancelledToday} cancelled` : undefined}
         />
         <StatCard
-          icon="💰"
+          icon={<DollarSign size={22} />}
           label="Today's Revenue"
           value={stats ? fmt(stats.totalRevenue) : null}
           loading={loading && !stats}
@@ -344,7 +363,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
           subtext={stats && stats.totalOrders > 0 ? `Avg ${fmt(stats.avgOrderValue)} / order` : undefined}
         />
         <StatCard
-          icon="📦"
+          icon={<Package size={22} />}
           label="Menu Items"
           value={stats ? fmtNum(stats.menuItemCount) : null}
           loading={loading && !stats}
@@ -352,7 +371,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
           subtext="Active items on menu"
         />
         <StatCard
-          icon="🔥"
+          icon={<Flame size={22} />}
           label="Today's Hot Item"
           value={stats?.hotItemName ?? (loading ? null : 'N/A')}
           loading={loading && !stats}
@@ -379,7 +398,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '22px' }}>🍽️</span>
+            <UtensilsCrossed size={22} />
             <div>
               <div style={{ fontWeight: 700, fontSize: '15px', color: '#FF6B35' }}>
                 {activeCount} active order{activeCount !== 1 ? 's' : ''} in the kitchen queue
@@ -420,7 +439,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
         {/* Order status breakdown */}
         <div className="glass-card" style={{ padding: '24px' }}>
           <h2 style={{ fontSize: '17px', fontWeight: 700, marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>📊</span> Order Status Breakdown
+            <BarChart2 size={16} /> Order Status Breakdown
           </h2>
           {loading && !stats ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}><Spinner /></div>
@@ -446,7 +465,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
         {/* Top selling items */}
         <div className="glass-card" style={{ padding: '24px' }}>
           <h2 style={{ fontSize: '17px', fontWeight: 700, marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>🏆</span> Top Selling Items Today
+            <Trophy size={16} /> Top Selling Items Today
           </h2>
           {loading && !stats ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}><Spinner /></div>
@@ -456,12 +475,11 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
                 const sold = item.totalSold ?? item.total_sold ?? 0;
                 const maxSold = (topItems[0]?.totalSold ?? topItems[0]?.total_sold ?? 1) || 1;
                 const pct = Math.round((sold / maxSold) * 100);
-                const MEDALS = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
                 return (
                   <div key={`${item.name}-${index}`} style={{ marginBottom: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '16px' }}>{MEDALS[index] ?? `${index + 1}.`}</span>
+                        {MEDALS[index] ?? `${index + 1}.`}
                         <span style={{ fontSize: '14px', fontWeight: 600 }}>{item.name}</span>
                       </div>
                       <span className="text-muted" style={{ fontSize: '13px' }}>
@@ -497,7 +515,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
       <div className="glass-card overview-fade" style={{ padding: '24px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
           <h2 style={{ fontSize: '17px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>🕐</span> Recent Orders
+            <Clock size={16} /> Recent Orders
           </h2>
           <button
             type="button"
@@ -590,7 +608,7 @@ const StaffOverviewPanel: React.FC<StaffOverviewPanelProps> = ({ userName, onGoT
               color: '#A0A0A0',
             }}
           >
-            <div style={{ fontSize: '36px' }}>🎉</div>
+            <PartyPopper size={36} />
             <div style={{ fontSize: '15px', fontWeight: 600, color: '#fff' }}>No orders yet today</div>
             <div style={{ fontSize: '14px' }}>New orders will appear here automatically.</div>
           </div>

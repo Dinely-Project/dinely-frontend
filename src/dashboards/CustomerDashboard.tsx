@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth-context';
 import { ROLE_COLORS } from '../constants/colors';
@@ -12,10 +13,10 @@ import CustomerProfilePanel from '../components/customer/profile/CustomerProfile
 type ActiveSection = 'Overview' | 'My Orders' | 'Order History' | 'Profile';
 
 const navItems: { icon: string; label: ActiveSection }[] = [
-  { icon: '🏠', label: 'Overview' },
-  { icon: '📋', label: 'My Orders' },
-  { icon: '🕐', label: 'Order History' },
-  { icon: '👤', label: 'Profile' },
+  { icon: 'OV', label: 'Overview' },
+  { icon: 'OR', label: 'My Orders' },
+  { icon: 'HI', label: 'Order History' },
+  { icon: 'PR', label: 'Profile' },
 ];
 
 const CustomerDashboard: React.FC = () => {
@@ -102,7 +103,7 @@ const CustomerDashboard: React.FC = () => {
               transition: 'all 0.2s',
             }}
           >
-            🛒
+            <ShoppingCart size={18} />
             {totalItems > 0 && (
               <span
                 style={{
@@ -137,10 +138,10 @@ const CustomerDashboard: React.FC = () => {
               fontWeight: 600,
             }}
           >
-            🍽️ Menu
+            <UtensilsCrossed size={16} /> Menu
           </Link>
 
-          {/* 🔔 Notification Bell */}
+          {/* Notification Bell */}
           <NotificationBell />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -207,7 +208,7 @@ const CustomerDashboard: React.FC = () => {
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              <span>{item.icon}</span>
+              <span style={{ width: '24px', fontSize: '12px', fontWeight: 700 }}>{item.icon}</span>
               <span>{item.label}</span>
             </button>
           ))}
@@ -239,7 +240,7 @@ const CustomerDashboard: React.FC = () => {
                 background: 'rgba(255,107,53,0.04)',
               }}
             >
-              <span>🍽️</span>
+              <UtensilsCrossed size={16} />
               <span>Browse Menu</span>
             </Link>
             <Link
@@ -257,7 +258,7 @@ const CustomerDashboard: React.FC = () => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span>🛒</span>
+                <ShoppingCart size={16} />
                 <span>View Cart</span>
               </div>
               {totalItems > 0 && (

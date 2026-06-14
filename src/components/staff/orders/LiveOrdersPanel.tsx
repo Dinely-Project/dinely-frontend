@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PartyPopper } from 'lucide-react';
 import { useOrders, type OrderStatus } from '../../../hooks/useOrders';
 import OrderCard from './OrderCard';
 import ToastNotification from '../../ToastNotification';
@@ -213,7 +214,7 @@ const LiveOrdersPanel: React.FC<LiveOrdersPanelProps> = ({ onViewDetail }) => {
             gap: '12px',
           }}
         >
-          <div style={{ fontSize: '40px' }}>🎉</div>
+          <PartyPopper size={40} />
           <p style={{ fontSize: '16px', fontWeight: 600 }}>
             {filterTab === 'all' ? 'No active orders right now.' : `No ${filterTab.toLowerCase()} orders.`}
           </p>

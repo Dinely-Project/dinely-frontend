@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Bell, BellOff, ClipboardList, UtensilsCrossed } from 'lucide-react';
 import { useNotifications } from '../../hooks/useNotifications';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -13,9 +14,9 @@ const formatTime = (iso: string): string => {
   return `${Math.floor(hrs / 24)}d ago`;
 };
 
-const TYPE_ICONS: Record<string, string> = {
-  ORDER_READY: '🍽️',
-  REQUEST_DECISION: '📋',
+const TYPE_ICONS: Record<string, React.ReactNode> = {
+  ORDER_READY: <UtensilsCrossed size={16} />,
+  REQUEST_DECISION: <ClipboardList size={16} />,
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -82,7 +83,7 @@ const NotificationBell: React.FC = () => {
           flexShrink: 0,
         }}
       >
-        🔔
+        <Bell size={20} />
         {unreadCount > 0 && (
           <span
             style={{
@@ -213,7 +214,7 @@ const NotificationBell: React.FC = () => {
                   color: '#6e7681',
                 }}
               >
-                <span style={{ fontSize: '28px' }}>🔕</span>
+                <BellOff size={28} />
                 <span style={{ fontSize: '14px' }}>No notifications yet</span>
               </div>
             )}
@@ -255,7 +256,7 @@ const NotificationBell: React.FC = () => {
                       flexShrink: 0,
                     }}
                   >
-                    {TYPE_ICONS[n.type] ?? '🔔'}
+                    {TYPE_ICONS[n.type] ?? <Bell size={16} />}
                   </div>
 
                   {/* Content */}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Clock } from 'lucide-react';
 
 interface ElapsedTimeProps {
   createdAt: string;
@@ -50,7 +51,7 @@ const ElapsedTime: React.FC<ElapsedTimeProps> = ({ createdAt }) => {
       }}
       title={new Date(createdAt).toLocaleString()}
     >
-      🕐 {label}
+      <Clock size={14} style={{ marginRight: 4 }} /> {label}
     </span>
   );
 };
