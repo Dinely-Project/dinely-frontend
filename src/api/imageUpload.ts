@@ -114,9 +114,7 @@ export const deleteMenuImage = async (filePath: string): Promise<void> => {
 };
 
 // 👉 extract file path from Supabase URL
-export const extractFileNameFromUrl = (
-  imageUrl: string
-): string | null => {
+export const extractFileNameFromUrl = (imageUrl: string): string | null => {
   try {
     const url = new URL(imageUrl);
     const parts = url.pathname.split('/');
@@ -129,3 +127,4 @@ export const extractFileNameFromUrl = (
     return null;
   }
 };
+

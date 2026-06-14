@@ -6,6 +6,8 @@ export interface User {
   email: string;
   role: string;
   status: string;
+  phone?: string | null;
+
   employee_role?: string | null;
   employee_level?: number | null;
   salary?: number | null;
