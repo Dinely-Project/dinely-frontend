@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth-context';
 import { useCart } from '../../context/CartContext';
@@ -113,7 +114,7 @@ const CartPage: React.FC = () => {
               gap: '16px',
             }}
           >
-            <span style={{ fontSize: '48px' }}>🛒</span>
+            <ShoppingCart size={48} />
             <p style={{ fontSize: '18px', fontWeight: 600 }}>Nothing in your cart yet</p>
             <p className="text-muted" style={{ fontSize: '14px' }}>
               Head to the menu to add some items.
@@ -174,7 +175,7 @@ const CartPage: React.FC = () => {
                           background: 'rgba(255,107,53,0.07)',
                         }}
                       >
-                        🍽️
+                        <UtensilsCrossed size={24} />
                       </div>
                     )}
                   </div>

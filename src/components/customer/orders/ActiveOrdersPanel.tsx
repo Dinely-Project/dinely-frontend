@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ban, ShoppingBag } from 'lucide-react';
 import { useCustomerOrders } from '../../../hooks/useCustomerOrders';
 import OrderReadyBanner from './OrderReadyBanner';
 
@@ -54,7 +55,7 @@ const StatusProgress: React.FC<StatusProgressProps> = ({ status }) => {
           fontWeight: 600,
         }}
       >
-        🚫 This order has been cancelled.
+        <Ban size={14} style={{ marginRight: 6 }} /> This order has been cancelled.
       </div>
     );
   }
@@ -242,7 +243,7 @@ const ActiveOrdersPanel: React.FC = () => {
             gap: '12px',
           }}
         >
-          <span style={{ fontSize: '40px' }}>🛍️</span>
+          <ShoppingBag size={40} />
           <p style={{ fontSize: '16px', fontWeight: 600 }}>No active orders right now.</p>
           <p className="text-muted" style={{ fontSize: '14px' }}>
             Place an order and track it live here.

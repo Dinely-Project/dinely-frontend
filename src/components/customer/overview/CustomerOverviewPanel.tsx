@@ -1,4 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Ban,
+  Banknote,
+  BarChart2,
+  Bell,
+  CheckCircle,
+  ChefHat,
+  ClipboardList,
+  Clock,
+  Inbox,
+  PartyPopper,
+  Radio,
+  ShoppingCart,
+  Star,
+  UtensilsCrossed,
+  XCircle,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../../../api/axios';
 import { getApiErrorMessage } from '../../../api/errors';
@@ -46,12 +63,12 @@ const STATUS_LABELS: Record<string, string> = {
   CANCELLED: 'Cancelled',
 };
 
-const STATUS_ICONS: Record<string, string> = {
-  RECEIVED: '📥',
-  PREPARING: '👨‍🍳',
-  READY: '✅',
-  FINISHED: '🎉',
-  CANCELLED: '❌',
+const STATUS_ICONS: Record<string, React.ReactNode> = {
+  RECEIVED: <Inbox size={16} />,
+  PREPARING: <ChefHat size={16} />,
+  READY: <CheckCircle size={16} color="#00C9A7" />,
+  FINISHED: <PartyPopper size={16} />,
+  CANCELLED: <XCircle size={16} color="#FF4C6A" />,
 };
 
 // ── Sub-components ────────────────────────────────────────────────────────────
@@ -72,7 +89,7 @@ const Spinner: React.FC<{ size?: number }> = ({ size = 20 }) => (
 );
 
 interface StatCardProps {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   value: string | null;
   loading: boolean;
@@ -102,7 +119,6 @@ const StatCard: React.FC<StatCardProps> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontSize: '22px',
         flexShrink: 0,
       }}
     >
@@ -185,7 +201,7 @@ const MiniProgressBar: React.FC<{ status: CustomerOrderStatus }> = ({ status }) 
           fontWeight: 600,
         }}
       >
-        <span>🚫</span> Cancelled
+        <Ban size={14} /> Cancelled
       </div>
     );
   }
@@ -303,7 +319,7 @@ const ActiveOrderCard: React.FC<ActiveOrderCardProps> = ({ order, onViewOrders }
             gap: '6px',
           }}
         >
-          <span>🔔</span> Your order is ready for pickup!
+          <Bell size={16} /> Your order is ready for pickup!
         </div>
       )}
 
@@ -467,7 +483,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
       >
         <div>
           <h1 style={{ fontSize: '30px', fontWeight: 700, marginBottom: '6px' }}>
-            Welcome back, {userName || 'Customer'} 👋
+            Welcome back, {userName || 'Customer'}
           </h1>
           <p className="text-muted" style={{ fontSize: '15px' }}>
             Here's a summary of your activity at Dinely.
@@ -552,7 +568,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
                 animation: 'pulse-glow 2s ease-in-out infinite',
               }}
             >
-              🔔
+              <Bell size={18} />
             </div>
             <div>
               <div style={{ fontWeight: 700, fontSize: '15px', color: '#3fb950' }}>
@@ -595,7 +611,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
         }}
       >
         <StatCard
-          icon="📋"
+          icon={<ClipboardList size={22} />}
           label="Total Orders"
           value={stats ? stats.totalOrders.toString() : null}
           loading={loading && !stats}
@@ -607,7 +623,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
           }
         />
         <StatCard
-          icon="💸"
+          icon={<Banknote size={22} />}
           label="Total Spent"
           value={stats ? fmt(stats.totalSpent) : null}
           loading={loading && !stats}
@@ -619,7 +635,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
           }
         />
         <StatCard
-          icon="📡"
+          icon={<Radio size={22} />}
           label="Active Orders"
           value={stats ? stats.activeOrders.toString() : null}
           loading={loading && !stats}
@@ -633,7 +649,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
           }
         />
         <StatCard
-          icon="⭐"
+          icon={<Star size={22} />}
           label="Favourite Item"
           value={stats?.favouriteItem ?? (loading ? null : 'N/A')}
           loading={loading && !stats}
@@ -665,7 +681,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
               border: '1px solid rgba(255,107,53,0.2)',
             }}
           >
-            <span style={{ fontSize: '24px' }}>🍽️</span>
+            <UtensilsCrossed size={24} />
             <div>
               <p style={{ fontWeight: 700, fontSize: '14px' }}>Browse Menu</p>
               <p className="text-muted" style={{ fontSize: '12px' }}>Order something delicious</p>
@@ -689,8 +705,8 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
                   : '1px solid rgba(255,255,255,0.06)',
             }}
           >
-            <div style={{ position: 'relative', fontSize: '24px' }}>
-              🛒
+            <div style={{ position: 'relative' }}>
+              <ShoppingCart size={18} />
               {totalItems > 0 && (
                 <span
                   style={{
@@ -740,7 +756,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
               border: '1px solid rgba(255,255,255,0.06)',
             }}
           >
-            <span style={{ fontSize: '24px' }}>📡</span>
+            <Radio size={24} />
             <div>
               <p style={{ fontWeight: 700, fontSize: '14px', color: '#fff' }}>Track Orders</p>
               <p className="text-muted" style={{ fontSize: '12px' }}>Live order status</p>
@@ -764,7 +780,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
               border: '1px solid rgba(255,255,255,0.06)',
             }}
           >
-            <span style={{ fontSize: '24px' }}>🕐</span>
+            <Clock size={24} />
             <div>
               <p style={{ fontWeight: 700, fontSize: '14px', color: '#fff' }}>Order History</p>
               <p className="text-muted" style={{ fontSize: '12px' }}>Past & cancelled orders</p>
@@ -804,7 +820,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
                   gap: '8px',
                 }}
               >
-                <span>📡</span> Active Orders
+                <Radio size={16} /> Active Orders
                 <span
                   style={{
                     background: 'rgba(210,153,34,0.15)',
@@ -880,7 +896,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
               gap: '8px',
             }}
           >
-            <span>📊</span> Order Breakdown
+            <BarChart2 size={16} /> Order Breakdown
           </h2>
           {loading && !stats ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}>
@@ -912,7 +928,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ fontSize: '16px' }}>{icon}</span>
+                      {icon}
                       <span style={{ fontSize: '14px', fontWeight: 600, color }}>{label}</span>
                     </div>
                     <span style={{ fontSize: '20px', fontWeight: 700, color }}>{count}</span>
@@ -991,7 +1007,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
               gap: '8px',
             }}
           >
-            <span>🕐</span> Recent Activity
+            <Clock size={16} /> Recent Activity
           </h2>
           <button
             type="button"
@@ -1094,7 +1110,7 @@ const CustomerOverviewPanel: React.FC<CustomerOverviewPanelProps> = ({
               color: '#A0A0A0',
             }}
           >
-            <div style={{ fontSize: '36px' }}>🍽️</div>
+            <UtensilsCrossed size={36} />
             <div style={{ fontSize: '15px', fontWeight: 600, color: '#fff' }}>
               No orders yet — let's change that!
             </div>

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Search } from 'lucide-react';
 import api from '../../../api/axios';
 import { getApiErrorMessage } from '../../../api/errors';
 import { uploadMenuImage } from '../../../api/imageUpload';
@@ -323,7 +324,7 @@ const MenuItemsPanel: React.FC = () => {
         {/* ── Filters ── */}
         <div className="grid gap-3 md:grid-cols-3 pt-2">
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm">🔍</span>
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
             <input
               className="input-field pl-9"
               value={filterSearch}

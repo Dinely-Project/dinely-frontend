@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { AuthContext } from '../context/auth-context';
@@ -24,7 +25,7 @@ const Navbar: React.FC = () => {
       zIndex: 100
     }}>
       <Link to="/" style={{ fontSize: '24px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-        <span>🍴</span>
+        <UtensilsCrossed size={20} />
         <span><span style={{ color: '#fff' }}>Din</span><span style={{ color: '#FF6B35' }}>ely</span></span>
       </Link>
       
@@ -51,7 +52,7 @@ const Navbar: React.FC = () => {
             textDecoration: 'none',
           }}
         >
-          🛒
+          <ShoppingCart size={20} />
           {totalItems > 0 && (
             <span
               style={{

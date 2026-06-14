@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Calendar, ClipboardList, Clock, MessageSquare, User } from 'lucide-react';
 import { useOrderDetail, type OrderStatus } from '../../../hooks/useOrders';
 import OrderStatusBadge from './OrderStatusBadge';
 import OrderActionButtons from './OrderActionButtons';
@@ -214,10 +215,12 @@ const OrderDetailView: React.FC<OrderDetailViewProps> = ({ orderId, onBack }) =>
         </div>
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
           <span className="text-muted" style={{ fontSize: '14px' }}>
-            👤 <strong style={{ color: '#fff' }}>{order.customer_name}</strong>
+            <User size={14} style={{ marginRight: 6 }} />
+            <strong style={{ color: '#fff' }}>{order.customer_name}</strong>
           </span>
           <span className="text-muted" style={{ fontSize: '14px' }}>
-            📅 {formatDateTime(order.created_at)}
+            <Calendar size={14} style={{ marginRight: 6 }} />
+            {formatDateTime(order.created_at)}
           </span>
           <span style={{ fontSize: '14px', fontWeight: 700, color: '#FF6B35' }}>
             {formatPrice(order.total_price)}
@@ -249,7 +252,7 @@ const OrderDetailView: React.FC<OrderDetailViewProps> = ({ orderId, onBack }) =>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div className="glass-card" style={{ padding: '24px', overflow: 'hidden' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px' }}>
-              📋 Items ({order.item_count})
+              <ClipboardList size={14} style={{ marginRight: 6 }} /> Items ({order.item_count})
             </h2>
 
             {/* Table header */}
@@ -320,7 +323,7 @@ const OrderDetailView: React.FC<OrderDetailViewProps> = ({ orderId, onBack }) =>
           {order.notes && (
             <div className="glass-card" style={{ padding: '20px 24px' }}>
               <h2 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '10px' }}>
-                💬 Customer Notes
+                <MessageSquare size={14} style={{ marginRight: 6 }} /> Customer Notes
               </h2>
               <p
                 style={{
@@ -343,7 +346,7 @@ const OrderDetailView: React.FC<OrderDetailViewProps> = ({ orderId, onBack }) =>
         {/* ── Right column: Status history timeline ────────────────────── */}
         <div className="glass-card" style={{ padding: '24px' }}>
           <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '22px' }}>
-            🕐 Status Timeline
+            <Clock size={14} style={{ marginRight: 6 }} /> Status Timeline
           </h2>
 
           {order.status_history.length === 0 ? (

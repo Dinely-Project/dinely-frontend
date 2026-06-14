@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ClipboardList, FileText } from 'lucide-react';
 import { useOrderHistory } from '../../../hooks/useCustomerOrders';
 import { STATUS_COLORS, STATUS_BG } from '../../../constants/colors';
 import type { CustomerOrderStatus } from '../../../hooks/useCustomerOrders';
@@ -182,7 +183,7 @@ const OrderHistoryPanel: React.FC = () => {
             textAlign: 'center',
           }}
         >
-          <span style={{ fontSize: '40px' }}>📋</span>
+          <ClipboardList size={40} />
           <p style={{ fontSize: '16px', fontWeight: 600 }}>No past orders yet.</p>
           <p className="text-muted" style={{ fontSize: '14px' }}>
             Once you've completed an order it will appear here.
@@ -329,7 +330,13 @@ const OrderHistoryPanel: React.FC = () => {
                           className="btn-ghost"
                           style={{ fontSize: '13px', padding: '8px 16px' }}
                         >
-                          {downloadingInvoiceOrderId === order.id ? 'Generating PDF...' : '📄 Download Invoice'}
+                          {downloadingInvoiceOrderId === order.id ? (
+                            'Generating PDF...'
+                          ) : (
+                            <>
+                              <FileText size={14} style={{ marginRight: 6 }} /> Download Invoice
+                            </>
+                          )}
                         </button>
                       </div>
                     )}

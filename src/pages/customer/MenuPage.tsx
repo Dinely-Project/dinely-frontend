@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import { ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth-context';
 import { useCart } from '../../context/CartContext';
@@ -128,7 +129,7 @@ const MenuPage: React.FC = () => {
                   textDecoration: 'none',
                 }}
               >
-                🛒 Cart
+                <ShoppingCart size={16} style={{ marginRight: 6 }} /> Cart
                 {totalItems > 0 && (
                   <span
                     style={{
@@ -270,7 +271,7 @@ const MenuPage: React.FC = () => {
               color: '#A0A0A0',
             }}
           >
-            <p style={{ fontSize: '40px', marginBottom: '12px' }}>🍽️</p>
+            <UtensilsCrossed size={40} />
             <p style={{ fontSize: '16px', fontWeight: 600 }}>No items found.</p>
             {searchQuery && (
               <p style={{ fontSize: '14px', marginTop: '8px' }}>
@@ -321,7 +322,7 @@ const MenuPage: React.FC = () => {
                           background: 'rgba(255,107,53,0.05)',
                         }}
                       >
-                        🍽️
+                        <UtensilsCrossed size={24} />
                       </div>
                     )}
                   </div>
