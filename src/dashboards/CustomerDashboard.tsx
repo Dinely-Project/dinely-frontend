@@ -6,6 +6,8 @@ import { useCart } from '../context/CartContext';
 import NotificationBell from '../components/notifications/NotificationBell';
 import ActiveOrdersPanel from '../components/customer/orders/ActiveOrdersPanel';
 import OrderHistoryPanel from '../components/customer/history/OrderHistoryPanel';
+import CustomerOverviewPanel from '../components/customer/overview/CustomerOverviewPanel';
+import CustomerProfilePanel from '../components/customer/profile/CustomerProfilePanel';
 
 type ActiveSection = 'Overview' | 'My Orders' | 'Order History' | 'Profile';
 
@@ -37,197 +39,18 @@ const CustomerDashboard: React.FC = () => {
       return <OrderHistoryPanel />;
     }
 
-    // Overview (and stubs for Profile)
-    return (
-      <div>
-        <div style={{ marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px' }}>
-            Customer Dashboard
-          </h1>
-          <p className="text-muted" style={{ fontSize: '16px' }}>
-            Welcome back, {user?.name || 'Customer'} 👋
-          </p>
-        </div>
+    if (activeSection === 'Overview') {
+      return (
+        <CustomerOverviewPanel
+          userName={user?.name}
+          onGoToOrders={() => setActiveSection('My Orders')}
+          onGoToHistory={() => setActiveSection('Order History')}
+        />
+      );
+    }
 
-        {/* Quick action cards */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: '16px',
-            marginBottom: '40px',
-          }}
-        >
-          <Link
-            to="/menu"
-            style={{ textDecoration: 'none' }}
-          >
-            <div
-              className="glass-card"
-              style={{
-                padding: '24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                cursor: 'pointer',
-                transition: 'border-color 0.2s',
-                border: '1px solid rgba(255,107,53,0.2)',
-              }}
-            >
-              <span style={{ fontSize: '28px' }}>🍽️</span>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: '15px', marginBottom: '4px' }}>
-                  Browse Menu
-                </p>
-                <p className="text-muted" style={{ fontSize: '13px' }}>
-                  View available items and add to cart
-                </p>
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            to="/cart"
-            style={{ textDecoration: 'none' }}
-          >
-            <div
-              className="glass-card"
-              style={{
-                padding: '24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-                cursor: 'pointer',
-                transition: 'border-color 0.2s',
-                border: totalItems > 0 ? '1px solid rgba(255,107,53,0.4)' : '1px solid rgba(255,255,255,0.06)',
-              }}
-            >
-              <div style={{ position: 'relative', display: 'inline-block', width: 'fit-content' }}>
-                <span style={{ fontSize: '28px' }}>🛒</span>
-                {totalItems > 0 && (
-                  <span
-                    style={{
-                      position: 'absolute',
-                      top: '-4px',
-                      right: '-8px',
-                      background: '#FF6B35',
-                      color: '#fff',
-                      borderRadius: '50%',
-                      width: '18px',
-                      height: '18px',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {totalItems}
-                  </span>
-                )}
-              </div>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: '15px', marginBottom: '4px' }}>
-                  My Cart
-                </p>
-                <p className="text-muted" style={{ fontSize: '13px' }}>
-                  {totalItems > 0
-                    ? `${totalItems} item${totalItems !== 1 ? 's' : ''} ready to order`
-                    : 'Your cart is empty'}
-                </p>
-              </div>
-            </div>
-          </Link>
-
-          <button
-            type="button"
-            onClick={() => setActiveSection('My Orders')}
-            style={{
-              textAlign: 'left',
-              background: 'none',
-              cursor: 'pointer',
-              fontFamily: "'Inter', sans-serif",
-            }}
-          >
-            <div
-              className="glass-card"
-              style={{
-                padding: '24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-              }}
-            >
-              <span style={{ fontSize: '28px' }}>📡</span>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: '15px', marginBottom: '4px', color: '#fff' }}>
-                  Track Order
-                </p>
-                <p className="text-muted" style={{ fontSize: '13px' }}>
-                  Live status of your active orders
-                </p>
-              </div>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveSection('Order History')}
-            style={{
-              textAlign: 'left',
-              background: 'none',
-              cursor: 'pointer',
-              fontFamily: "'Inter', sans-serif",
-            }}
-          >
-            <div
-              className="glass-card"
-              style={{
-                padding: '24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-              }}
-            >
-              <span style={{ fontSize: '28px' }}>🕐</span>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: '15px', marginBottom: '4px', color: '#fff' }}>
-                  Order History
-                </p>
-                <p className="text-muted" style={{ fontSize: '13px' }}>
-                  View past and cancelled orders
-                </p>
-              </div>
-            </div>
-          </button>
-        </div>
-
-        <div
-          className="glass-card"
-          style={{
-            padding: '40px',
-            minHeight: '200px',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '24px' }}>
-            📊 Recent Activity
-          </h2>
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: '#A0A0A0',
-            }}
-          >
-            No activity yet. Check back later.
-          </div>
-        </div>
-      </div>
-    );
+    // Profile
+    return <CustomerProfilePanel />;
   };
 
   return (
